@@ -1,0 +1,9 @@
+Ok saya ingin menggunakan supabase. buatkan di issue.md, untuk membuat planing. Nanti dokumen planingnya akan digunakan junior programmer atau model yang lebih murah
+
+isi dari planing nya adalah sebagai berikut:
+
+1. buatkan planing awal setup yangsudah kita bicarakan tadi.
+2. buatkan panduan untuk setup backend dan frontendnya
+3. buatkan panduan untuk implementasi fitur-fitur yang sudah kita definisikan.
+
+Jelaskan step tahapan yang harus dilakukan untuk mengimplementasikan fitur ini. anggap nanti yang mengimplementasikan adalah junior developer atau ai model yang lebih murah, jadi jelaskan sedetail mungkin.

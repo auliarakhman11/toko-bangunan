@@ -1,95 +1,113 @@
-# 📋 Roadmap & Issue Planning - Toko Bangunan App
+# 🏗️ Master Plan & Panduan Implementasi: Toko Bangunan POS & ERP
 
-Dokumen ini digunakan sebagai acuan perencanaan (*planning*) pembuatan issue dan pengerjaan fitur pada GitHub Repository. Setiap poin dapat dijadikan **GitHub Issue** tersendiri.
-
----
-
-## 🎯 Milestone 1: Inisialisasi Project & Arsitektur dasar
-- [ ] **#1 Setup Project Backend**
-  - Inisialisasi server backend (Environment, Dependencies, Port).
-  - Setup struktur folder (Controllers, Routes, Models/Services, Middlewares).
-  - Setup koneksi Database (MongoDB / PostgreSQL / MySQL).
-- [ ] **#2 Setup Project Frontend**
-  - Inisialisasi framework/starter Frontend (HTML/CSS/JS / React / Vite).
-  - Setup layouting umum (Navbar, Footer, Sidebar Admin, Responsive Container).
-  - Setup router & pemicu API Client (Axios/Fetch utility).
-- [ ] **#3 Dokumentasi & CORS Setup**
-  - Konfigurasi CORS pada backend agar membolehkan permintaan dari origin frontend.
-  - Setup file `.env.example` di backend dan frontend.
+> **PENTING UNTUK DEVELOPER / AI:** 
+> Dokumen ini adalah spesifikasi teknis lengkap (SOP) untuk membangun sistem Kasir & ERP Toko Bangunan. Anda **DIWAJIBKAN** untuk mengikuti panduan ini secara berurutan (dari Fase 1 hingga selesai). Jangan melompat mengerjakan Frontend jika API Backend belum selesai dan belum dites.
 
 ---
 
-## 🔐 Milestone 2: Autentikasi & Manajemen Pengguna
-- [ ] **#4 API Autentikasi (Backend)**
-  - Endpoint Register Pengguna (Pembeli).
-  - Endpoint Login & Generate Token (JWT / Session).
-  - Endpoint Profile & Refresh Token.
-  - Middleware Verifikasi Token & Role-based Access (Admin vs Pembeli).
-- [ ] **#5 UI Autentikasi (Frontend)**
-  - Halaman Register & Validasi Form.
-  - Halaman Login & Penyimpanan Token Auth (LocalStorage / Cookie).
-  - Proteksi Halaman (Route Guard untuk Admin & Pembeli).
+## 🛠️ Stack Teknologi Utama
+1. **Database:** PostgreSQL (Di-hosting di Supabase)
+2. **Backend:** ExpressJS + TypeScript + Prisma ORM
+3. **Frontend:** Next.js (App Router) + TypeScript + Tailwind CSS
+4. **State Management:** Zustand (Client state) & React Query (Server state / Caching)
+5. **Autentikasi:** JWT (Access Token & Refresh Token)
 
 ---
 
-## 📦 Milestone 3: Manajemen Katalog & Produk Bangunan
-- [ ] **#6 Database Schema Produk & Kategori**
-  - Model/Tabel Kategori (Semen, Besi, Cat, Kayu, Alat Tukang, Pipa & Sanitasi, dll).
-  - Model/Tabel Produk (Nama, Kode SKU, Deskripsi, Harga, Satuan: *sak/batang/m3/lembar/dus*, Stok, Gambar, Berat/Volume).
-- [ ] **#7 API CRUD Produk & Kategori (Admin Backend)**
-  - API Tambah, Edit, Hapus, dan Get Kategori.
-  - API Tambah Produk (Upload gambar produk).
-  - API Edit & Update Stok Produk.
-  - API Hapus Produk (Soft delete / Hard delete).
-- [ ] **#8 UI Management Produk (Admin Frontend)**
-  - Halaman List Produk (Tabel dengan pagination & search).
-  - Modal/Form Tambah Produk Baru (dengan preview gambar & satuan produk).
-  - Form Edit & Update Stok Produk.
+## 🚀 FASE 1: PANDUAN SETUP AWAL (INITIALIZATION)
+
+Tahap ini bertujuan untuk menyiapkan pondasi proyek. Lakukan eksekusi secara berurutan.
+
+### 1. Setup Backend (ExpressJS + Prisma)
+**Direktori:** `/backend`
+- Jalankan inisialisasi: `npm init -y`
+- Install dependencies utama: `npm install express cors jsonwebtoken dotenv`
+- Install dev dependencies: `npm install -D typescript @types/node @types/express @types/cors @types/jsonwebtoken ts-node nodemon`
+- Setup TypeScript: `npx tsc --init`. (Pastikan `outDir` mengarah ke `./dist`).
+- Inisialisasi Prisma ORM: `npx prisma init`
+- **Tugas Supabase:** Buat project di Supabase. Dapatkan URL koneksi PostgreSQL. Masukkan URL tersebut ke file `/backend/.env` pada variabel `DATABASE_URL`.
+- Buat struktur folder: `src/controllers`, `src/routes`, `src/middlewares`, `src/services`, `src/utils`.
+
+### 2. Setup Frontend (Next.js PWA)
+**Direktori:** `/frontend`
+- Jalankan inisialisasi: `npx create-next-app@latest .` (Pilih: TypeScript = Yes, Tailwind CSS = Yes, App Router = Yes).
+- Install dependencies tambahan: `npm install zustand @tanstack/react-query axios`
+- Install library PWA (opsional untuk tahap awal, namun wajib nanti): `npm install next-pwa`
+- Setup konfigurasi Axios untuk base URL backend (misal: `http://localhost:5000/api`).
 
 ---
 
-## 🛒 Milestone 4: Katalog Publik & Keranjang Belanja
-- [ ] **#9 UI Katalog Produk (Frontend)**
-  - Halaman Landing Page / Home dengan Banner & Produk Terpopuler.
-  - Filter Produk Berdasarkan Kategori & Range Harga.
-  - Fitur Search Produk secara *real-time*.
-  - Halaman Detail Produk (Deskripsi, Satuan Beli, Cek Ketersediaan Stok).
-- [ ] **#10 Fitur Keranjang Belanja (Shopping Cart)**
-  - API / State Keranjang Belanja (Tambah item, ubah kuantitas, hapus item).
-  - UI Modal / Halaman Keranjang Belanja.
-  - Hitung Otomatis Subtotal berdasarkan Satuan & Jumlah Beli.
+## 🗺️ FASE 2: PANDUAN IMPLEMENTASI FITUR (MILESTONE)
 
----
+*Setiap sub-poin di bawah ini bisa dijadikan acuan pembuatan 1 sesi prompt untuk AI atau 1 tiket task untuk Junior Developer.*
 
-## 🚚 Milestone 5: Transaksi Checkout & Pengiriman
-- [ ] **#11 API Checkout & Pemesanan (Backend)**
-  - API Buat Pesanan Baru (Order Items, Alamat Pengiriman, Catatan Pengiriman).
-  - Logika Pemotongan Stok Produk Otomatis saat checkout.
-  - API Hitung Estimasi Pengiriman / Armada Toko (Truk, Pickup, Kargo Berat).
-- [ ] **#12 UI Checkout & Konfirmasi Alamat (Frontend)**
-  - Halaman Checkout Form (Alamat lengkap, Opsi armada pengiriman).
-  - Ringkasan Pesanan & Total Pembayaran.
-  - Generasi Kode Transaksi / Nota Pesanan.
+### 🔐 Milestone 1: Arsitektur Dasar & Autentikasi
+Sistem ini menggunakan multi-akses (Kasir, Admin, Super User) dan dibatasi oleh Cabang.
+1. **Skema Prisma (Backend):**
+   - Buat model `Branch` (Cabang).
+   - Buat model `User` (Karyawan) dengan atribut `role` (SUPER_USER, ADMIN, KASIR) dan berikan relasi `branch_id` ke model `Branch`.
+2. **API Autentikasi (Backend):**
+   - Buat fungsi *seeder* untuk meng-generate 1 Super User pertama.
+   - Endpoint `POST /api/auth/login` yang mereturn JWT Access Token (limit singkat misal 1 jam) dan Refresh Token.
+   - Buat Middleware `verifyToken` dan `verifyRole`.
+3. **UI Autentikasi (Frontend):**
+   - Buat Halaman Login. Simpan token yang didapat ke dalam Cookies / LocalStorage.
+   - Konfigurasi *Axios Interceptors* agar setiap request ke Backend otomatis menyematkan token JWT di *Header Authorization*.
 
----
+### 📦 Milestone 2: Master Data Multi-Cabang
+Data produk, kategori, pelanggan, dan supplier. Perhatian: Kasir hanya boleh mengakses data di cabangnya sendiri.
+1. **Skema Prisma (Backend):**
+   - Buat model `Category`, `Supplier`, `Customer`.
+   - Buat model `Product` (Nama, SKU/Barcode, Satuan [sak/batang/m3], Harga Jual).
+2. **CRUD API (Backend):**
+   - Buat REST API untuk semua Master Data (GET, POST, PUT, DELETE).
+   - **Aturan Multi-Cabang:** Filter query GET berdasarkan `user.branch_id` (diambil dari token JWT kasir yang sedang login). Super User bisa melihat semua.
+3. **UI Master Data (Frontend):**
+   - Buat halaman Admin berupa tabel (dilengkapi filter kategori & kolom search).
+   - Form untuk menambah dan mengedit barang.
 
-## 💳 Milestone 6: Pembayaran & Pengiriman Pesanan
-- [ ] **#13 Integrasi Pembayaran (Transfer Bank / E-Wallet / COD)**
-  - API Upload Bukti Transfer (jika pembayaran manual).
-  - API Integrasi Payment Gateway (Midtrans/Xendit) - *Opsional/Fase Lanjutan*.
-  - Endpoint Verifikasi Status Pembayaran oleh Admin.
-- [ ] **#14 UI Riwayat Pesanan & Status Tracking**
-  - Halaman "Pesanan Saya" untuk Pembeli (Status: *Menunggu Pembayaran, Diproses, Dikirim, Selesai*).
-  - Halaman Manajemen Pesanan Masuk untuk Admin.
-  - Tombol Update Status Pengiriman oleh Admin (Input Nomor Resi / Driver Toko).
+### 📊 Milestone 3: Sistem Stok Berbasis Ledger (SANGAT KRITIKAL)
+**ATURAN KERAS:** JANGAN PERNAH membuat sistem stok dengan sekadar `stok = stok - 1`. Gunakan riwayat (Ledger).
+1. **Skema Prisma (Backend):**
+   - Buat model `StockMovement` dengan field: `product_id`, `branch_id`, `type` (IN, OUT, RETURN_GOOD, RETURN_BAD, VOID), `qty`, `avg_cost` (Harga Modal Rata-rata), `reference_id` (ID Transaksi).
+2. **Logika Backend:**
+   - Stok akhir sebuah barang = `SUM(qty IN) - SUM(qty OUT)`. Buatkan *Service Function* untuk menghitung ini secara dinamis.
+   - Implementasikan *Average Cost* (HPP). Setiap ada pembelian barang dari Supplier, hitung ulang rata-rata harga modal barang tersebut.
+3. **Fitur Pengembalian/Void:**
+   - Jika ada pembatalan transaksi, insert row baru di `StockMovement` dengan tipe `VOID` untuk mengembalikan kuantitas stok tanpa menghapus riwayat sebelumnya.
 
----
+### 🛒 Milestone 4: Modul Kasir (Point of Sale) & PWA
+Ini adalah layar utama yang dipakai kasir sehari-hari.
+1. **Fitur Offline-First (Frontend):**
+   - Gunakan fitur PWA agar website bisa diakses tanpa internet.
+   - Cache hasil API Master Data Produk ke dalam *IndexedDB* (bisa dibantu library localForage atau React Query cache).
+   - Jika offline, tampung data transaksi di IndexedDB lokal. Jika kembali online, kirim ke server (Sync).
+2. **UI Kasir (Frontend):**
+   - Tampilan keranjang belanja (Cart).
+   - Pilihan metode bayar (Cash, QRIS, Transfer, Kasbon).
+   - Simpan data customer pembeli (jika diinput).
+3. **Cetak Struk & Notif WA:**
+   - Gunakan `navigator.bluetooth` API untuk connect ke printer Thermal Bluetooth lokal.
+   - Buat tombol "Kirim Struk WA" yang membuka URL redirect: `https://wa.me/{NoHPCustomer}?text={StrukTeksFormat}`.
 
-## 📊 Milestone 7: Dashboard Admin & Laporan Penjualan
-- [ ] **#15 API Laporan Penjualan (Backend)**
-  - API Ringkasan Penjualan (Total Omset, Jumlah Transaksi, Produk Terlaris).
-  - API Notifikasi Stok Menipis.
-- [ ] **#16 UI Dashboard Analytics (Admin Frontend)**
-  - Widget Statistik (Total Penjualan, Total Produk, Total User).
-  - Chart Penjualan Bulanan / Harian.
-  - Tabel Peringatan Stok Bahan Bangunan Menipis.
+### 💳 Milestone 5: Piutang (Kasbon) & Hutang Supplier
+Sistem harus bisa mencicil hutang secara bertahap dengan berbagai metode pembayaran.
+1. **Skema Prisma (Backend):**
+   - Model `Receivable` (Piutang Customer): Total Kasbon, Sisa Hutang, Status.
+   - Model `Payable` (Hutang Supplier).
+   - Model `PaymentHistory` (Log cicilan).
+2. **Logika Transaksi:**
+   - Saat kasir memilih metode "Kasbon", validasi apakah customer sudah didaftarkan, lalu catat di `Receivable`.
+   - Buat UI & API khusus untuk layar "Pembayaran Cicilan".
+
+### 📈 Milestone 6: Akuntansi & Laporan (Laba Rugi)
+Fitur untuk Owner / Super User memantau kinerja toko.
+1. **API Laporan (Backend):**
+   - **Laporan Laba Rugi:** `Total Pendapatan (Penjualan) - Total HPP (Berdasarkan Average Cost di StockMovement)`.
+   - **Cash Saat Ini:** Selisih uang masuk (Penjualan Tunai/Transfer/Cicilan Piutang) dikurangi uang keluar (Bayar Supplier).
+   - Buat endpoint agregasi data per hari, minggu, bulan. Fitur filter per cabang wajib ada.
+2. **Manajemen Investor:**
+   - Model `Investor` (Nama, Modal Disetor, Persentase Bagi Hasil).
+   - Kalkulasi pembagian otomatis berdasarkan Net Profit (Laba Bersih).
+3. **UI Dashboard (Frontend):**
+   - Buat chart menggunakan library `chart.js` atau `recharts` untuk visualisasi performa toko.
